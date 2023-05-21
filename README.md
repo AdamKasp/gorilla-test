@@ -25,6 +25,7 @@ Pola bytu “przegląd”:
 ● zalecenia dalszej obsługi po przeglądzie
 ● numer telefonu osoby do kontaktu po stronie klienta
 ● data utworzenia
+
 Pola bytu “zgłoszenie awarii”:
 ● opis
 ● typ (zgłoszenie awarii)
@@ -45,11 +46,13 @@ też dane na temat tygodnia w roku dla tej daty oraz w tej sytuacji, status prze
 ● jeśli wiadomość zawiera w polu `description` frazę `bardzo pilne`, to jest to dla nas priorytet
 `krytyczny`, jeśli zawiera frazę `pilne` - potraktujmy to jako priorytet `wysoki`, jeśli nie zawiera
 powyższych słów – wówczas jest to dla nas priorytet `normalny`
+
+
 ● jeśli wiadomość kwalifikujemy jako zgłoszenie awarii, wówczas `dueDate` jest terminem
 wizyty serwisu, jeśli zajdzie taka okoliczność wówczas status określamy jako `termin`, w
 przeciwnym razie jako `nowy`
 ● jeśli wystąpi duplikat według pola `description`, wówczas kolejnego bytu na jego podstawie
-już nie tworzymy
+już nie tworzymy !!!
 ● odpowiednikiem pola `numer telefonu osoby do kontaktu po stronie klienta` w pliku
 źródłowym jest pole `phone`
 ● pola bytów, dla których nie mamy podstaw by je wypełnić zostawiamy puste
