@@ -10,9 +10,9 @@ use DateTimeImmutable;
 
 final readonly class TechnicalReview implements SupportTicketInterface
 {
-        private Status $status;
-        private ?int $numberOfWeek;
-        private DateTimeImmutable $createdAt;
+    private Status $status;
+    private ?int $numberOfWeek;
+    private DateTimeImmutable $createdAt;
     public function __construct(
         public ?string $description = '',
         public ?DateTimeImmutable $dueDate = null,

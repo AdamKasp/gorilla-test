@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\SupportTicket\Infastructure\Cli;
 
-use App\SupportTicket\Application\Factory\SupportTicketFactory;
-use App\SupportTicket\Domain\Entity\TechnicalReview\TechnicalReview;
+use App\SupportTicket\Application\Generator\SupportTicketReportGenerator;
 use App\SupportTicket\Domain\Repository\SupportTicketRepositoryInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -15,14 +14,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(
     name: 'support:ticket-report:generate',
-    description: 'it generates a report of all support tickets from provided file',
+    description: 'it generates a report of all support tickets from provided file, if no file is provided it will use input.json file',
 )]
 final class SupportTicketReportGeneratorCommand extends Command
 {
-
     public function __construct(
-        private readonly SupportTicketFactory $supportTicketFactory,
-        private readonly SupportTicketRepositoryInterface $supportTicketRepository
+        private readonly SupportTicketRepositoryInterface $supportTicketRepository,
+        private readonly SupportTicketReportGenerator $supportTicketReportGenerator
     ) {
         parent::__construct();
     }
@@ -32,22 +30,11 @@ final class SupportTicketReportGeneratorCommand extends Command
 
         $supportTickets = $this->supportTicketRepository->getAllSupportTickets($pathFromInput);
 
-        $crashReports = [];
-        $technicalReviews = [];
-        $processedSupportTicketsDescriptions = [];
+        $technicalReviews = $this->supportTicketReportGenerator->generateReport($supportTickets)['technicalReviews'];
+        $crashReports = $this->supportTicketReportGenerator->generateReport($supportTickets)['crashReports'];
+        $processedSupportTicketsDescriptions = $this->supportTicketReportGenerator->generateReport($supportTickets)['duplicatedSupportTickets'];
+        $idsOfDuplicates = $this->supportTicketReportGenerator->generateReport($supportTickets)['idsOfDuplicates'];
 
-        foreach ($supportTickets as $supportTicket) {
-            if (in_array($supportTicket['description'], $processedSupportTicketsDescriptions)) {
-                $processedSupportTicketsDescriptions[] = $supportTicket['description'];
-                continue;
-            }
-            $supportTicket = $this->supportTicketFactory->createSupportTicketFromArray($supportTicket);
-            if ($supportTicket instanceof TechnicalReview) {
-                $technicalReviews[] = $supportTicket->getArrayPreparedToPrint();
-            } else {
-                $crashReports[] = $supportTicket->getArrayPreparedToPrint();
-            }
-        }
         $output->writeln('reports generated');
 
         $output->writeln('there is ' . count($crashReports) . ' crash reports');
@@ -55,13 +42,23 @@ final class SupportTicketReportGeneratorCommand extends Command
 
         if(count($processedSupportTicketsDescriptions) > 0) {
             $output->writeln('there is ' . count($processedSupportTicketsDescriptions) . ' duplicated support tickets');
+            foreach ($idsOfDuplicates as $id) {
+                $output->writeln('id of duplicated support ticket: ' . $id);
+            }
 
         }
 
-        file_put_contents("crashReport.json", json_encode($crashReports, JSON_PRETTY_PRINT));
-        file_put_contents("technicalReview.json", json_encode($technicalReviews, JSON_PRETTY_PRINT));
+        if(file_put_contents("crashReport.json", json_encode($crashReports, JSON_PRETTY_PRINT))) {
+            $output->writeln('crash reports saved to file');
+        } else {
+            $output->writeln('crash reports not saved to file');
+        };
 
-        $output->writeln('reports saved to files');
+        if(file_put_contents("technicalReview.json", json_encode($technicalReviews, JSON_PRETTY_PRINT))) {
+            $output->writeln('technical reviews saved to file');
+        } else {
+            $output->writeln('technical reviews not saved to file');
+        }
 
         return Command::SUCCESS;
     }

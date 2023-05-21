@@ -47,7 +47,6 @@ final class SupportTicketFactoryTest extends TestCase
         Assert::assertNull($supportTicket->dueDate);
     }
 
-    // Add more cases
     public function testCreatesTechnicalReviewFromArrayWithProperlyCalculatedWeekOfYear(): void
     {
         $factory = new SupportTicketFactory();
@@ -113,15 +112,17 @@ final class SupportTicketFactoryTest extends TestCase
         Assert::assertSame($supportTicket->priority(), Priority::High);
     }
 
-//todo dodac opcje na due date "" i " "
-    public function testCreatesCrashReportFromArrayWithoutDueDate(): void
+    /**
+     * @dataProvider invalidDateProvider
+     */
+    public function testCreatesCrashReportFromArrayWithoutDueDate(mixed $date): void
     {
         $factory = new SupportTicketFactory();
 
         $item = [
             "number" => 4,
             "description" =>"pilne awaria opis",
-            "dueDate"=> null,
+            "dueDate"=> $date,
             "phone"=>"666-445-127"
         ];
 
@@ -129,5 +130,13 @@ final class SupportTicketFactoryTest extends TestCase
         Assert::assertInstanceOf(CrashReport::class, $supportTicket);
         Assert::assertSame($supportTicket->priority(), Priority::High);
         Assert::assertSame($supportTicket->status(), Status::New);
+    }
+
+    public static function invalidDateProvider(): array
+    {
+        return [
+            'null value' => [null],
+            'empty string' => [''],
+        ];
     }
 }

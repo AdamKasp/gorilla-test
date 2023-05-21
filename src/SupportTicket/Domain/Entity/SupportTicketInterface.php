@@ -6,5 +6,4 @@ namespace App\SupportTicket\Domain\Entity;
 
 interface SupportTicketInterface
 {
-
 }
