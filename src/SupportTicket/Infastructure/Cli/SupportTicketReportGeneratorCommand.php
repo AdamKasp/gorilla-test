@@ -40,25 +40,11 @@ final class SupportTicketReportGeneratorCommand extends Command
         $output->writeln('there is ' . count($crashReports) . ' crash reports');
         $output->writeln('there is ' . count($technicalReviews) . ' technical reviews');
 
-        if(count($processedSupportTicketsDescriptions) > 0) {
-            $output->writeln('there is ' . count($processedSupportTicketsDescriptions) . ' duplicated support tickets');
-            foreach ($idsOfDuplicates as $id) {
-                $output->writeln('id of duplicated support ticket: ' . $id);
-            }
+        $this->printInfoAboutDuplications($processedSupportTicketsDescriptions, $idsOfDuplicates, $output);
 
-        }
+        $this->generateReportToFile($crashReports, 'crashReport.json', $output);
 
-        if(file_put_contents("crashReport.json", json_encode($crashReports, JSON_PRETTY_PRINT))) {
-            $output->writeln('crash reports saved to file');
-        } else {
-            $output->writeln('crash reports not saved to file');
-        };
-
-        if(file_put_contents("technicalReview.json", json_encode($technicalReviews, JSON_PRETTY_PRINT))) {
-            $output->writeln('technical reviews saved to file');
-        } else {
-            $output->writeln('technical reviews not saved to file');
-        }
+        $this->generateReportToFile($technicalReviews, 'technicalReview.json', $output);
 
         return Command::SUCCESS;
     }
@@ -68,6 +54,28 @@ final class SupportTicketReportGeneratorCommand extends Command
         $this
             ->addArgument('file', InputArgument::OPTIONAL, 'Path to file with support tickets')
         ;
+    }
+
+    private function printInfoAboutDuplications(
+        array $processedSupportTicketsDescriptions,
+        array $idsOfDuplicates,
+        OutputInterface $output
+    ): void {
+        if (count($processedSupportTicketsDescriptions) > 0) {
+            $output->writeln('there is ' . count($processedSupportTicketsDescriptions) . ' duplicated support tickets');
+            foreach ($idsOfDuplicates as $id) {
+                $output->writeln('id of duplicated support ticket: ' . $id);
+            }
+        }
+    }
+
+    private function generateReportToFile(array $report, string $fileName, OutputInterface $output): void
+    {
+        if(file_put_contents($fileName, json_encode($report, JSON_PRETTY_PRINT))) {
+            $output->writeln($fileName . ' report saved to file');
+        } else {
+            $output->writeln($fileName . ' report not saved to file');
+        }
     }
 }
 
