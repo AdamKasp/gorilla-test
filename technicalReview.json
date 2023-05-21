@@ -1,0 +1,52 @@
+[
+    {
+        "opis": "Witam dzie\u0144 dobry, mam spraw\u0119, zg\u0142asza\u0142am ostatnio awari\u0119, ale teraz chcia\u0142a bym przegl\u0105d, prosz\u0119 przyjecha\u0107 przegl\u0105dn\u0105\u0107 klimakonwektory.",
+        "typ": "przegl\u0105d",
+        "data_przegl\u0105du": "",
+        "tydzie\u0144": null,
+        "status": "nowy",
+        "zalecenia": "",
+        "telefon_kontaktowy": "668-221-777",
+        "data_utworzenia": "2023-05-21"
+    },
+    {
+        "opis": "Prosz\u0119 przyjecha\u0107 na przegl\u0105d instalacji elektrycznej dnia 15 lutego.",
+        "typ": "przegl\u0105d",
+        "data_przegl\u0105du": "2020-02-15",
+        "tydzie\u0144": 7,
+        "status": "zaplanowano",
+        "zalecenia": "",
+        "telefon_kontaktowy": "+48606303404",
+        "data_utworzenia": "2023-05-21"
+    },
+    {
+        "opis": "Czy Panowie mog\u0105 zjawi\u0107 si\u0119 na ponowny przegl\u0105d rur kanalizacyjnych? Mamy tu ma\u0142y problem z zapachem.",
+        "typ": "przegl\u0105d",
+        "data_przegl\u0105du": "2020-02-22",
+        "tydzie\u0144": 8,
+        "status": "zaplanowano",
+        "zalecenia": "",
+        "telefon_kontaktowy": "+48701145976",
+        "data_utworzenia": "2023-05-21"
+    },
+    {
+        "opis": "Mam na pan\u00f3w z\u0142\u0105 wiadomo\u015b\u0107. Zapraszam na ponowny przegl\u0105d maty zabezpieczaj\u0105cej w meblu kasowym. Ostatnio by\u0142 a sprz\u0119t niestety nie dzia\u0142a, pilne!",
+        "typ": "przegl\u0105d",
+        "data_przegl\u0105du": "2020-03-02",
+        "tydzie\u0144": 10,
+        "status": "zaplanowano",
+        "zalecenia": "",
+        "telefon_kontaktowy": "+48505167301",
+        "data_utworzenia": "2023-05-21"
+    },
+    {
+        "opis": "My\u015bl\u0119 \u017ce ju\u017c czas pomy\u015ble\u0107 o ponownym przegl\u0105dzie klimatyzacji na sali sprzeda\u017cy.Bardzo pilne to nie jest ale, POTRZEBNE!",
+        "typ": "przegl\u0105d",
+        "data_przegl\u0105du": "",
+        "tydzie\u0144": null,
+        "status": "nowy",
+        "zalecenia": "",
+        "telefon_kontaktowy": "506 482 179",
+        "data_utworzenia": "2023-05-21"
+    }
+]

@@ -18,6 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 )]
 final class SupportTicketReportGeneratorCommand extends Command
 {
+    private const DEFAULT_FILE_PATH = __DIR__ . '/../../../../input.json';
     public function __construct(
         private readonly SupportTicketRepositoryInterface $supportTicketRepository,
         private readonly SupportTicketReportGenerator $supportTicketReportGenerator
@@ -26,13 +27,12 @@ final class SupportTicketReportGeneratorCommand extends Command
     }
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $pathFromInput = $input->getArgument('file') !== null ? $input->getArgument('file') : __DIR__ . '/../../../../input.json';
+        $pathFromInput = $input->getArgument('file') !== null ? $input->getArgument('file') : self::DEFAULT_FILE_PATH;
 
         $supportTickets = $this->supportTicketRepository->getAllSupportTickets($pathFromInput);
 
         $technicalReviews = $this->supportTicketReportGenerator->generateReport($supportTickets)['technicalReviews'];
         $crashReports = $this->supportTicketReportGenerator->generateReport($supportTickets)['crashReports'];
-        $processedSupportTicketsDescriptions = $this->supportTicketReportGenerator->generateReport($supportTickets)['duplicatedSupportTickets'];
         $idsOfDuplicates = $this->supportTicketReportGenerator->generateReport($supportTickets)['idsOfDuplicates'];
 
         $output->writeln('reports generated');
@@ -40,7 +40,7 @@ final class SupportTicketReportGeneratorCommand extends Command
         $output->writeln('there is ' . count($crashReports) . ' crash reports');
         $output->writeln('there is ' . count($technicalReviews) . ' technical reviews');
 
-        $this->printInfoAboutDuplications($processedSupportTicketsDescriptions, $idsOfDuplicates, $output);
+        $this->printInfoAboutDuplications($idsOfDuplicates, $output);
 
         $this->generateReportToFile($crashReports, 'crashReport.json', $output);
 
@@ -57,12 +57,13 @@ final class SupportTicketReportGeneratorCommand extends Command
     }
 
     private function printInfoAboutDuplications(
-        array $processedSupportTicketsDescriptions,
         array $idsOfDuplicates,
         OutputInterface $output
     ): void {
-        if (count($processedSupportTicketsDescriptions) > 0) {
-            $output->writeln('there is ' . count($processedSupportTicketsDescriptions) . ' duplicated support tickets');
+        $countOfDuplicates = count($idsOfDuplicates);
+
+        if ($countOfDuplicates > 0) {
+            $output->writeln('there is ' . $countOfDuplicates . ' duplicated support tickets');
             foreach ($idsOfDuplicates as $id) {
                 $output->writeln('id of duplicated support ticket: ' . $id);
             }

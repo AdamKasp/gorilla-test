@@ -20,10 +20,10 @@ final class SupportTicketReportGenerator
 
         foreach ($supportTickets as $supportTicket) {
             if (in_array($supportTicket['description'], $processedSupportTicketsDescriptions)) {
-                $processedSupportTicketsDescriptions[] = $supportTicket['description'];
                 $idsOfDuplicates[] = $supportTicket['number'];
                 continue;
             }
+            $processedSupportTicketsDescriptions[] = $supportTicket['description'];
             $supportTicket = $this->supportTicketFactory->createSupportTicketFromArray($supportTicket);
             if ($supportTicket instanceof TechnicalReview) {
                 $technicalReviews[] = $supportTicket->getArrayPreparedToPrint();
@@ -35,7 +35,6 @@ final class SupportTicketReportGenerator
         return [
             'technicalReviews' => $technicalReviews,
             'crashReports' => $crashReports,
-            'duplicatedSupportTickets' => $processedSupportTicketsDescriptions,
             'idsOfDuplicates' => $idsOfDuplicates,
         ];
     }
