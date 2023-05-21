@@ -15,10 +15,10 @@ final readonly class CrashReport implements SupportTicketInterface
     private Status $status;
     private DateTimeImmutable $createdAt;
     public function __construct(
-        public string $description,
-        public ?dateTimeImmutable $dueDate,
-        public string $serviceNotes,
-        public string $contactNumber,
+        public ?string $description = '',
+        public ?dateTimeImmutable $dueDate = null,
+        public ?string $serviceNotes = '',
+        public ?string $contactNumber = '',
     ) {
         $this->priority = $this->processPriority($description);
         $this->status = $dueDate !== null ? Status::Termin : Status::New;
@@ -39,6 +39,21 @@ final readonly class CrashReport implements SupportTicketInterface
     {
         return $this->createdAt;
     }
+
+    public function getArrayPreparedToPrint(): array
+    {
+        return [
+            'opis' => $this->description,
+            'typ' => 'zgłoszenie awarii',
+            'priorytet' => $this->priority->value,
+            'termin_wizyty' => $this->dueDate !== null ? $this->dueDate->format('Y-m-d') : '',
+            'status' => $this->status->value,
+            'uwagi_serwisu' => $this->serviceNotes,
+            'telefon_kontaktowy' => $this->contactNumber,
+            'data_utworzenia' => $this->createdAt->format('Y-m-d'),
+        ];
+    }
+
     private function processPriority(string $description): Priority
     {
         $description = strtolower($description);

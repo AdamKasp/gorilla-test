@@ -27,10 +27,10 @@ final class SupportTicketFactory
         );
     }
     public function createCrashReport(
-        string $description,
+        ?string $description,
         ?dateTimeImmutable $dueDate,
-        string $contactNumber,
-        string $serviceNotes = '',
+        ?string $contactNumber,
+        ?string $serviceNotes = '',
     ): CrashReport {
         return new CrashReport(
             $description,
@@ -41,10 +41,10 @@ final class SupportTicketFactory
     }
 
     public function createTechnicalReview(
-        string $description,
+        ?string $description,
         ?dateTimeImmutable $dueDate,
-        string $contactNumber,
-        string $tipsAfterReview = '',
+        ?string $contactNumber,
+        ?string $tipsAfterReview = '',
     ): TechnicalReview {
         return new TechnicalReview(
             $description,
