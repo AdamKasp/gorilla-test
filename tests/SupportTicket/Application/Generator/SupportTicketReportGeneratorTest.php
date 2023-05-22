@@ -26,10 +26,10 @@ final class SupportTicketReportGeneratorTest extends TestCase
         Assert::assertIsArray($reports['crashReports']);
         Assert::assertCount(2, $reports['crashReports']);
 
-        Assert::assertArrayHasKey('idsOfDuplicates', $reports);
-        Assert::assertIsArray($reports['idsOfDuplicates']);
-        Assert::assertCount(1, $reports['idsOfDuplicates']);
-        Assert::assertSame(3, $reports['idsOfDuplicates'][0]);
+        Assert::assertArrayHasKey('duplicates', $reports);
+        Assert::assertIsArray($reports['duplicates']);
+        Assert::assertCount(1, $reports['duplicates']);
+        Assert::assertSame(3, $reports['duplicates'][0]['number']);
     }
 
     private function getArray(): array

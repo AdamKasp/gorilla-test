@@ -16,11 +16,11 @@ final class SupportTicketReportGenerator
         $crashReports = [];
         $technicalReviews = [];
         $processedSupportTicketsDescriptions = [];
-        $idsOfDuplicates = [];
+        $duplicates = [];
 
         foreach ($supportTickets as $supportTicket) {
             if (in_array($supportTicket['description'], $processedSupportTicketsDescriptions)) {
-                $idsOfDuplicates[] = $supportTicket['number'];
+                $duplicates[] = $supportTicket;
                 continue;
             }
             $processedSupportTicketsDescriptions[] = $supportTicket['description'];
@@ -35,7 +35,7 @@ final class SupportTicketReportGenerator
         return [
             'technicalReviews' => $technicalReviews,
             'crashReports' => $crashReports,
-            'idsOfDuplicates' => $idsOfDuplicates,
+            'duplicates' => $duplicates,
         ];
     }
 }

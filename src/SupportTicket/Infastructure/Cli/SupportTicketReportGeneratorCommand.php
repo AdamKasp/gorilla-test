@@ -33,18 +33,20 @@ final class SupportTicketReportGeneratorCommand extends Command
 
         $technicalReviews = $this->supportTicketReportGenerator->generateReport($supportTickets)['technicalReviews'];
         $crashReports = $this->supportTicketReportGenerator->generateReport($supportTickets)['crashReports'];
-        $idsOfDuplicates = $this->supportTicketReportGenerator->generateReport($supportTickets)['idsOfDuplicates'];
+        $duplicates = $this->supportTicketReportGenerator->generateReport($supportTickets)['duplicates'];
 
         $output->writeln('reports generated');
 
         $output->writeln('there is ' . count($crashReports) . ' crash reports');
         $output->writeln('there is ' . count($technicalReviews) . ' technical reviews');
 
-        $this->printInfoAboutDuplications($idsOfDuplicates, $output);
+        $this->printInfoAboutDuplications($duplicates, $output);
 
         $this->generateReportToFile($crashReports, 'crashReport.json', $output);
 
         $this->generateReportToFile($technicalReviews, 'technicalReview.json', $output);
+
+        $this->generateReportToFile($duplicates, 'duplicates.json', $output);
 
         return Command::SUCCESS;
     }
@@ -57,15 +59,15 @@ final class SupportTicketReportGeneratorCommand extends Command
     }
 
     private function printInfoAboutDuplications(
-        array $idsOfDuplicates,
+        array $duplicates,
         OutputInterface $output
     ): void {
-        $countOfDuplicates = count($idsOfDuplicates);
+        $countOfDuplicates = count($duplicates);
 
         if ($countOfDuplicates > 0) {
             $output->writeln('there is ' . $countOfDuplicates . ' duplicated support tickets');
-            foreach ($idsOfDuplicates as $id) {
-                $output->writeln('id of duplicated support ticket: ' . $id);
+            foreach ($duplicates as $duplicate) {
+                $output->writeln('id of duplicated support ticket: ' . $duplicate['number']);
             }
         }
     }
