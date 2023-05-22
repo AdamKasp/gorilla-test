@@ -14,6 +14,7 @@ final readonly class CrashReport implements SupportTicketInterface
     private Priority $priority;
     private Status $status;
     private DateTimeImmutable $createdAt;
+
     public function __construct(
         public ?string $description = '',
         public ?dateTimeImmutable $dueDate = null,

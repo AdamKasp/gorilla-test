@@ -26,6 +26,7 @@ final class SupportTicketFactory
             $item['phone'],
         );
     }
+
     public function createCrashReport(
         ?string $description,
         ?dateTimeImmutable $dueDate,

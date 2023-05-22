@@ -11,6 +11,7 @@ final class SupportTicketReportGenerator
 {
     public function __construct(private SupportTicketFactory $supportTicketFactory)
     {}
+
     public function generateReport(array $supportTickets): array
     {
         $crashReports = [];
@@ -23,6 +24,7 @@ final class SupportTicketReportGenerator
                 $duplicates[] = $supportTicket;
                 continue;
             }
+
             $processedSupportTicketsDescriptions[] = $supportTicket['description'];
             $supportTicket = $this->supportTicketFactory->createSupportTicketFromArray($supportTicket);
             if ($supportTicket instanceof TechnicalReview) {

@@ -21,4 +21,6 @@
 2. Probably we should add extra validation for input file
 3. refactor a bit test to make assertions more readable
 4. consider use behats
-
+5. consider to make more "object-oriented" solution instead of using array everywhere
+6. probably we should rethink place of prepare ticket to print, probably some extra service will be fine
+7. generated report probably should be in some predefined price
